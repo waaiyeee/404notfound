@@ -1,51 +1,44 @@
 import React from 'react';
 
-const ImpactDashboard = ({ confidence, matches, anxiety }) => {
+
+const MatchPage = ({ personaSummary, friendName, friendTrait, onBack }) => {
   return (
-    <div className="bg-white p-6 rounded-2xl shadow-lg mt-6 border border-gray-100">
-      <div className="flex justify-between items-center mb-4">
-        <h3 className="text-xl font-bold text-gray-800">Social Progress Report</h3>
-        <span className="text-sm bg-blue-100 text-blue-600 px-3 py-1 rounded-full font-medium">Real-time Data</span>
-      </div>
-
-      <div className="grid grid-cols-3 gap-4 text-center">
-        {/* Confidence Card */}
-        <div className="p-4 bg-blue-50 rounded-xl">
-          <p className="text-sm text-blue-600 font-semibold uppercase">Confidence</p>
-          <h2 className="text-3xl font-bold text-blue-900">{confidence}%</h2>
+    <div className="flex flex-col items-center justify-center min-h-screen bg-slate-50 p-6 text-center">
+      <div className="max-w-md w-full bg-white rounded-3xl shadow-2xl p-8 border border-indigo-100">
+        <div className="w-20 h-20 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-6">
+          <span className="text-4xl">✨</span>
         </div>
-
-        {/* Matches Card */}
-        <div className="p-4 bg-green-50 rounded-xl">
-          <p className="text-sm text-green-600 font-semibold uppercase">Matches</p>
-          <h2 className="text-3xl font-bold text-green-900">{matches}</h2>
-        </div>
-
-        {/* Anxiety Reduction Card */}
-        <div className="p-4 bg-red-50 rounded-xl">
-          <p className="text-sm text-red-600 font-semibold uppercase">Anxiety</p>
-          <h2 className="text-3xl font-bold text-red-900">-{anxiety}%</h2>
-        </div>
-      </div>
-
-      {/* Social Readiness Progress Bar */}
-      <div className="mt-6">
-        <div className="flex justify-between text-sm mb-2">
-          <span className="text-gray-600">Social Readiness Pathway</span>
-          <span className="font-bold text-blue-600">{confidence}% Ready</span>
-        </div>
-        <div className="w-full bg-gray-200 rounded-full h-3">
-          <div 
-            className="bg-blue-600 h-3 rounded-full transition-all duration-500 ease-out" 
-            style={{ width: `${confidence}%` }}
-          ></div>
-        </div>
-        <p className="text-xs text-gray-400 mt-2 italic">
-          *Calculated via biometric emotional stability and communication style analysis.
+        
+        <h1 className="text-2xl font-bold text-gray-800 mb-4">Aura's Analysis Complete</h1>
+        
+        <p className="text-gray-600 mb-6 leading-relaxed">
+          "After conversing with you, Aura has realized that you are someone who is 
+          <span className="font-bold text-indigo-600"> {personaSummary}</span>."
         </p>
+
+        <div className="bg-indigo-50 rounded-2xl p-6 mb-8 border border-indigo-100">
+          <p className="text-sm text-indigo-400 uppercase font-bold tracking-widest mb-2">We found a connection</p>
+          <h2 className="text-xl font-bold text-gray-800 mb-1">{friendName}</h2>
+          <p className="text-gray-500 text-sm">is also a <span className="font-medium text-gray-700">{friendTrait}</span></p>
+          <p className="mt-4 text-sm text-gray-600 italic">"They are comfortable and excited to speak with you!"</p>
+        </div>
+
+        <button 
+          className="w-full bg-indigo-600 text-white font-bold py-4 rounded-xl hover:bg-indigo-700 transition-all shadow-lg"
+          onClick={() => alert("Connecting to chat...")}
+        >
+          Say Hello to {friendName}
+        </button>
+        
+        <button 
+          className="mt-4 text-gray-400 text-sm underline"
+          onClick={onBack}
+        >
+          Keep Practicing with Aura
+        </button>
       </div>
     </div>
   );
 };
 
-export default ImpactDashboard;
+export default MatchPage;
