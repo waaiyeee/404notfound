@@ -2,7 +2,6 @@ import { Link, useLocation } from 'react-router-dom';
 
 export default function TopNav() {
   const location = useLocation();
-  const isLanding = location.pathname === '/';
   
   return (
     <>
@@ -17,8 +16,7 @@ export default function TopNav() {
         </div>
         
         <div className="nav-right">
-          <a href="#about" className="nav-link">About</a>
-          <a href="#privacy" className="nav-link">Privacy</a>
+          <Link to="/summary" className="nav-link nav-link-progress">PROGRESS</Link>
         </div>
       </nav>
       
@@ -60,6 +58,11 @@ export default function TopNav() {
           color: #2d3748;
         }
         
+        .nav-link-progress {
+          font-weight: 600;
+          letter-spacing: 0.05em;
+        }
+        
         .nav-logo {
           font-size: 20px;
           font-weight: 600;
@@ -83,8 +86,7 @@ export default function TopNav() {
             font-size: 18px;
           }
           
-          .nav-left a:last-child,
-          .nav-right a:last-child {
+          .nav-left a:last-child {
             display: none;
           }
         }
