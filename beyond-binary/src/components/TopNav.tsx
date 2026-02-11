@@ -7,8 +7,8 @@ export default function TopNav() {
     <>
       <nav className="top-nav">
         <div className="nav-left">
-          <Link to="/modes" className="nav-link">Modes</Link>
-          <Link to="/" className="nav-link">How it works</Link>
+          <Link to="/modes" className="nav-link">Scenarios</Link>
+          <Link to="/" className="nav-link">Sandbox</Link>
         </div>
         
         <div className="nav-center">
@@ -16,7 +16,7 @@ export default function TopNav() {
         </div>
         
         <div className="nav-right">
-          <Link to="/summary" className="nav-link nav-link-progress">PROGRESS</Link>
+          <Link to="/summary" className="nav-link nav-link-progress">Progress</Link>
         </div>
       </nav>
       
