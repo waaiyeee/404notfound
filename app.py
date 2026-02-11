@@ -19,7 +19,7 @@ yolo_model = YOLO("yolov8n.pt")
 emotion_classifier = pipeline("image-classification", model="dima806/facial_emotions_image_detection")
 
 # 2. Configure Gemini
-genai.configure(api_key="AIzaSyA2NRedqRSZ3uEm5wIqosq6rfr-QgdmRo4")
+genai.configure(api_key="YOUR_API_KEY_HERE")
 model = genai.GenerativeModel('gemini-2.5-flash')
 
 # 3. User data storage (in production, use a database)
