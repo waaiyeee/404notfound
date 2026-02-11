@@ -2,9 +2,9 @@ import { createBrowserRouter } from 'react-router-dom';
 import Landing from './pages/Landing';
 import Modes from './pages/Modes';
 import Session from './pages/Session';
-import Match from './pages/Match';
-import Summary from './pages/Summary';
 import Community from './pages/Community';
+import Chat from './pages/Chat';
+import Summary from './pages/Summary';
 
 export const router = createBrowserRouter([
   {
@@ -20,15 +20,15 @@ export const router = createBrowserRouter([
     element: <Session />,
   },
   {
-    path: '/match',
-    element: <Match />,
+    path: '/community',
+    element: <Community />,
   },
   {
     path: '/summary',
     element: <Summary />,
   },
   {
-    path: '/community',
-    element: <Community />,
+    path: '/chat/:userId',
+    element: <Chat />,
   },
 ]);

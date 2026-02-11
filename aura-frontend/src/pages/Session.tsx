@@ -10,15 +10,6 @@ interface Message {
   time: string;
 }
 
-interface PersonaData {
-  style: string;
-  summary: string;
-  friend: {
-    name: string;
-    trait: string;
-  };
-}
-
 const MODE_PROMPTS: Record<string, string> = {
   interview: "Hi, I'm Aura. Let's practice for your interview. Tell me about yourself and what role you're preparing for.",
   difficult: "Hi, I'm Aura. This is a safe space to practice difficult conversations. What challenging topic would you like to work through?",
@@ -48,7 +39,6 @@ export default function Session() {
   
   // Persona tracking
   const [messageCount, setMessageCount] = useState(0);
-  const [personaData, setPersonaData] = useState<PersonaData | null>(null);
   const [showMatchOffer, setShowMatchOffer] = useState(false);
 
   // Poll for emotion and distraction from backend
@@ -79,19 +69,21 @@ export default function Session() {
     };
     
     setMessages(prev => [...prev, userMsg]);
+    const currentMessage = message;
     setMessage('');
-    setMessageCount(prev => prev + 1);
+    const newCount = messageCount + 1;
+    setMessageCount(newCount);
     
     try {
       const response = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          message: message,
+          message: currentMessage,
           emotion: emotion,
           isDistracted: isDistracted,
-          messageCount: messageCount + 1,
-          practiceMode: practiceMode // Send practice mode to backend
+          messageCount: newCount,
+          practiceMode: practiceMode
         }),
       });
 
@@ -106,18 +98,19 @@ export default function Session() {
       
       setMessages(prev => [...prev, auraMsg]);
       
-      // Store persona data
-      if (data.personaSummary && data.friend) {
-        setPersonaData({
-          style: data.detectedStyle || 'Direct',
-          summary: data.personaSummary,
-          friend: data.friend
-        });
-      }
-      
-      // Check if we should show match offer (after 5+ messages and focused)
-      if ((messageCount + 1) >= 5 && !isDistracted && data.friend) {
+      // Show match offer after 5 messages
+      if (newCount >= 5 && !showMatchOffer) {
         setShowMatchOffer(true);
+        
+        // Add Aura's matching prompt
+        setTimeout(() => {
+          const matchPrompt: Message = {
+            sender: 'aura',
+            text: "You're doing great! Would you like to explore other options? I can connect you with real people who match your communication style.",
+            time: new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })
+          };
+          setMessages(prev => [...prev, matchPrompt]);
+        }, 1000);
       }
       
     } catch (err) {
@@ -131,13 +124,10 @@ export default function Session() {
     }
   };
 
-  const handleGoToMatch = () => {
-    if (personaData) {
-      navigate('/match', { state: personaData });
-    }
+  const handleExploreMatches = () => {
+    navigate('/community');
   };
 
-  // Get mode-specific title
   const getTitle = () => {
     const titles: Record<string, string> = {
       interview: 'Mock Interview Practice',
@@ -238,14 +228,18 @@ export default function Session() {
               {showMatchOffer && (
                 <div className="match-offer">
                   <div className="match-offer-content">
-                    <span className="match-icon">✨</span>
+                    <span className="match-icon">🤝</span>
                     <p className="match-text">
-                      I've analyzed your communication style and found a potential friend match. 
-                      Would you like to see who I found?
+                      Ready to connect with real people?
                     </p>
-                    <button className="btn-view-match" onClick={handleGoToMatch}>
-                      View My Match
-                    </button>
+                    <div className="match-buttons">
+                      <button className="btn-yes" onClick={handleExploreMatches}>
+                        Yes, show me matches
+                      </button>
+                      <button className="btn-no" onClick={() => setShowMatchOffer(false)}>
+                        No, keep practicing
+                      </button>
+                    </div>
                   </div>
                 </div>
               )}
@@ -266,7 +260,7 @@ export default function Session() {
               </button>
               
               <div className="session-actions">
-                <button className="btn-action" onClick={() => navigate('/summary')}>
+                <button className="btn-action" onClick={() => navigate('/')}>
                   End Session
                 </button>
               </div>
@@ -510,29 +504,51 @@ export default function Session() {
         }
         
         .match-text {
-          font-size: 14px;
+          font-size: 15px;
           color: #2d3748;
           line-height: 1.5;
           margin: 0;
+          font-weight: 600;
         }
         
-        .btn-view-match {
-          padding: 12px 28px;
-          background: rgba(100, 120, 200, 0.9);
-          color: white;
+        .match-buttons {
+          display: flex;
+          gap: 12px;
+          width: 100%;
+        }
+        
+        .btn-yes, .btn-no {
+          flex: 1;
+          padding: 12px 24px;
           border: none;
           border-radius: 12px;
           font-size: 14px;
           font-weight: 600;
           cursor: pointer;
           transition: all 0.3s ease;
+        }
+        
+        .btn-yes {
+          background: rgba(100, 120, 200, 0.9);
+          color: white;
           box-shadow: 0 4px 16px rgba(100, 120, 200, 0.25);
         }
         
-        .btn-view-match:hover {
+        .btn-yes:hover {
           background: rgba(90, 110, 190, 1);
           transform: translateY(-2px);
           box-shadow: 0 6px 20px rgba(100, 120, 200, 0.35);
+        }
+        
+        .btn-no {
+          background: rgba(255, 255, 255, 0.7);
+          color: #5a6b7d;
+          border: 1px solid rgba(200, 200, 220, 0.4);
+        }
+        
+        .btn-no:hover {
+          background: rgba(255, 255, 255, 0.9);
+          transform: translateY(-1px);
         }
         
         .chat-input-section {

@@ -8,44 +8,48 @@ export default function Community() {
 
   const allMatches = [
     {
-      id: 1,
+      id: 'alex_m',
       name: 'Alex M.',
       compatibility: 92,
       verbosity: 'MED',
       disclosure: 'D1',
       interests: ['anime', 'games'],
       reason: 'Similar disclosure + verbosity',
-      bio: 'Enjoys deep conversations about anime and gaming. Looking for someone to practice social skills with.'
+      bio: 'Enjoys deep conversations about anime and gaming. Looking for someone to practice social skills with.',
+      avatar: '🎮'
     },
     {
-      id: 2,
+      id: 'jordan_l',
       name: 'Jordan L.',
       compatibility: 87,
       verbosity: 'HIGH',
       disclosure: 'D2',
       interests: ['music', 'art'],
       reason: 'Complementary communication style',
-      bio: 'Artist who loves sharing thoughts on music and creative processes. Open to meaningful conversations.'
+      bio: 'Artist who loves sharing thoughts on music and creative processes. Open to meaningful conversations.',
+      avatar: '🎨'
     },
     {
-      id: 3,
+      id: 'sam_k',
       name: 'Sam K.',
       compatibility: 85,
       verbosity: 'LOW',
       disclosure: 'D0',
       interests: ['sports', 'fitness'],
       reason: 'Matches your communication pace',
-      bio: 'Fitness enthusiast looking for workout buddies and casual chats about staying healthy.'
+      bio: 'Fitness enthusiast looking for workout buddies and casual chats about staying healthy.',
+      avatar: '💪'
     },
     {
-      id: 4,
+      id: 'taylor_r',
       name: 'Taylor R.',
       compatibility: 83,
       verbosity: 'MED',
       disclosure: 'D1',
       interests: ['games', 'anime'],
       reason: 'Shared interests + similar style',
-      bio: 'Gamer and anime fan who enjoys analyzing storylines and character development.'
+      bio: 'Gamer and anime fan who enjoys analyzing storylines and character development.',
+      avatar: '🎯'
     },
   ];
 
@@ -58,13 +62,15 @@ export default function Community() {
           <h1 className="community-title">Your Matched Community</h1>
           <p className="community-subtitle">
             Based on your communication style and interests, here are peers who might resonate with you.
-            These matches are calculated using verbosity, disclosure depth, and shared interests.
+            Click on anyone to start chatting!
           </p>
         </div>
         
         <div className="matches-grid">
           {allMatches.map((match) => (
             <GlassCard key={match.id} className="match-card">
+              <div className="match-avatar">{match.avatar}</div>
+              
               <div className="match-header">
                 <div>
                   <h3 className="match-name">{match.name}</h3>
@@ -92,17 +98,17 @@ export default function Community() {
               
               <button 
                 className="btn-connect"
-                onClick={() => alert(`Connecting you with ${match.name}... Feature coming soon!`)}
+                onClick={() => navigate(`/chat/${match.id}`)}
               >
-                Connect with {match.name}
+                Start Chatting with {match.name}
               </button>
             </GlassCard>
           ))}
         </div>
         
         <div className="back-section">
-          <button className="btn-back" onClick={() => navigate('/modes')}>
-            ← Back to Practice Modes
+          <button className="btn-back" onClick={() => navigate('/session')}>
+            ← Back to Practice with Aura
           </button>
         </div>
       </div>
@@ -146,6 +152,19 @@ export default function Community() {
           padding: 28px;
           display: flex;
           flex-direction: column;
+          cursor: pointer;
+          transition: all 0.3s ease;
+        }
+        
+        .match-card:hover {
+          transform: translateY(-4px);
+          box-shadow: 0 8px 24px rgba(100, 120, 200, 0.2);
+        }
+        
+        .match-avatar {
+          font-size: 48px;
+          text-align: center;
+          margin-bottom: 16px;
         }
         
         .match-header {
